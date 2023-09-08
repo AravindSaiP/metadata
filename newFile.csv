@@ -1,0 +1,5 @@
+"entity_id","label_id","type","hint_id","deleted","read_only","def_option_id","version","code","description","tooltip","variable_type","sub_type","selection_entity","content_variable","identifier"
+"e9000","l9000","textbox","h9000","1","1","","1","var1","d9000","t9000","content","TA","0","",""
+"e9001","l9001","Single-Select","","1","1","op9000","1","var2","d9001","t9001","content","DD","0","",""
+"e9002","l9002","textbox","h9002","1","1","","1","var1","d9002","t9002","content","TA","0","",""
+"e9003","l9003","Single-Select","","1","1","op9002","1","var2","d9003","t9003","content","DD","0","",""
