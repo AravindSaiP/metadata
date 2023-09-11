@@ -1,9 +1,9 @@
-package com.workbench.automate.metadata.constants;
+package com.workbench.automate.metadata.data;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class MetadataUserPreference {
+public class Data {
     private  int start_index;
     private String sheet_name;
 
@@ -11,7 +11,7 @@ public class MetadataUserPreference {
 
     private int group_start_index;
 
-    public MetadataUserPreference() {
+    public Data() {
     }
 
     public  int getStart_index() {

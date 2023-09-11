@@ -12,6 +12,8 @@ public class ObjectClassResponse {
     private ObjectClass []objectClasses;
     private Map<String,String[]> options;
 
+
+
     public ObjectClassResponse(ObjectClass[] objectClasses, Map<String, String[]> options) {
         this.objectClasses = objectClasses;
         this.options = options;

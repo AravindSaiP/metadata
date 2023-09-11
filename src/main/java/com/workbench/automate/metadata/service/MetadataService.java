@@ -1,6 +1,6 @@
 package com.workbench.automate.metadata.service;
 
-import com.workbench.automate.metadata.constants.MetadataUserPreference;
+import com.workbench.automate.metadata.data.Data;
 import com.workbench.automate.metadata.entity.GroupClass;
 import com.workbench.automate.metadata.entity.LabelClass;
 import com.workbench.automate.metadata.entity.ObjectClass;
@@ -20,7 +20,7 @@ public class MetadataService {
     CsvService csvService;
 
     @Autowired
-    MetadataUserPreference metadataUserPreference;
+    Data data;
 
     private Map<String,String> subTypeMap = new HashMap<>();
     private Map<String,String> typeMap = new HashMap<>();
@@ -109,19 +109,19 @@ public class MetadataService {
         int index;
         switch (type){
             case "optionId" : {
-                index = metadataUserPreference.getOption_start_index();
-                metadataUserPreference.incrementOptionStart_index();
+                index = data.getOption_start_index();
+                data.incrementOptionStart_index();
                 break;
             }
             case "groupId" : {
-                index = metadataUserPreference.getGroup_start_index()+1000;
-                metadataUserPreference.incrementGroupStart_index();
+                index = data.getGroup_start_index()+1000;
+                data.incrementGroupStart_index();
                 break;
             }
 
             default:{
-                index = metadataUserPreference.getStart_index();
-                metadataUserPreference.incrementStart_index();
+                index = data.getStart_index();
+                data.incrementStart_index();
                 break;
             }
         }
@@ -223,10 +223,14 @@ public class MetadataService {
 
     public void createGroups(ObjectClass[] objectClasses, Metadata[] metadata) {
         List<GroupClass> groupClasses = new ArrayList<>();
+        Map<String,String> parentAccordions = new HashMap<>();
         for(int i=0;i< objectClasses.length;){
             StringBuilder entities = new StringBuilder("");
-            String parent_accordion = metadata[i].getParent_accordion_name();
-            while (i < objectClasses.length && metadata[i].getParent_accordion_name().equalsIgnoreCase(parent_accordion)){
+            String accordion_name = metadata[i].getAccordion_name();
+            String parentAccordian_name = metadata[i].getParent_accordion_name();
+
+
+            while (i < objectClasses.length && metadata[i].getAccordion_name().equalsIgnoreCase(accordion_name)){
                 entities = entities.append(objectClasses[i].getEntity_id()+",");
                 i++;
             }
@@ -238,10 +242,14 @@ public class MetadataService {
             String parent_group = "";
             String version = MetadataConstants.VERSION;
 
-            String category = metadataUserPreference.getSheet_name();
+            String category = data.getSheet_name();
             String repeatable = MetadataConstants.REPEATABLE;
             String groupByKeys = "";
             String isAccordion = "TRUE";
+
+            if(!parentAccordian_name.equalsIgnoreCase("")){
+                parentAccordions.put(parentAccordian_name,groupId);
+            }
 
             GroupClass groupClass = GroupClass.builder()
                     .group_id(groupId)
@@ -261,4 +269,6 @@ public class MetadataService {
 
         csvService.beanToCsvGroupsClass(groupClasses,"groups");
     }
+
+
 }
