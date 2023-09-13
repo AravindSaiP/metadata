@@ -7,6 +7,8 @@ import com.workbench.automate.metadata.entity.ObjectClass;
 import com.workbench.automate.metadata.constants.MetadataConstants;
 import com.workbench.automate.metadata.entity.OptionClass;
 import com.workbench.automate.metadata.model.Metadata;
+import com.workbench.automate.metadata.request.Requirement;
+import com.workbench.automate.metadata.result_model.GroupClassResponse;
 import com.workbench.automate.metadata.result_model.ObjectClassResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -154,7 +156,7 @@ public class MetadataService {
     }
 
 
-    public void createLables(ObjectClass[] objectClasses, Map<String, String[]> options, Metadata[] metadata) {
+    public void createLables(ObjectClass[] objectClasses, Map<String, String[]> options, Map<String, String> groupIds, Metadata[] metadata) {
         List<LabelClass> labelClasses = new ArrayList<>();
         String text_id;
         String en;
@@ -200,6 +202,15 @@ public class MetadataService {
             labelClasses.add(option);
         }
 
+        Set<Map.Entry<String,String>> entrySetGroups = groupIds.entrySet();
+        for(Map.Entry<String,String> keys : entrySetGroups){
+            text_id = keys.getKey();
+            en = keys.getValue();
+            version = MetadataConstants.VERSION;
+            LabelClass option = new LabelClass(text_id,en,"","","","",version,"","");
+            labelClasses.add(option);
+        }
+
         csvService.beanToCsvLabelsClass(labelClasses,"labels");
 
     }
@@ -221,14 +232,15 @@ public class MetadataService {
     }
 
 
-    public void createGroups(ObjectClass[] objectClasses, Metadata[] metadata) {
+    public GroupClassResponse createGroups(ObjectClass[] objectClasses, Metadata[] metadata) {
         List<GroupClass> groupClasses = new ArrayList<>();
         Map<String,String> parentAccordions = new HashMap<>();
+        Map<String,String> labelIdsMap = new HashMap<>();
+
         for(int i=0;i< objectClasses.length;){
             StringBuilder entities = new StringBuilder("");
             String accordion_name = metadata[i].getAccordion_name();
             String parentAccordian_name = metadata[i].getParent_accordion_name();
-
 
             while (i < objectClasses.length && metadata[i].getAccordion_name().equalsIgnoreCase(accordion_name)){
                 entities = entities.append(objectClasses[i].getEntity_id()+",");
@@ -239,7 +251,7 @@ public class MetadataService {
             String groupId = "gr" + id;
             String labelId = "l" + id;
             String code = "GR" + id;
-            String parent_group = "";
+            //String parent_group = "";
             String version = MetadataConstants.VERSION;
 
             String category = data.getSheet_name();
@@ -251,13 +263,15 @@ public class MetadataService {
                 parentAccordions.put(parentAccordian_name,groupId);
             }
 
+            labelIdsMap.put(labelId,accordion_name);
+
             GroupClass groupClass = GroupClass.builder()
                     .group_id(groupId)
                     .label_id(labelId)
                     .code(code)
                     .entities(new String(entities))
                     .category(category)
-                    .parent_group(parent_group)
+                    .parent_group(parentAccordions.get(groupId))
                     .version(version)
                     .repeatable(repeatable)
                     .group_by_key(groupByKeys)
@@ -268,7 +282,28 @@ public class MetadataService {
         }
 
         csvService.beanToCsvGroupsClass(groupClasses,"groups");
+
+        return GroupClassResponse.builder()
+                .groupIds(labelIdsMap)
+                .build();
     }
 
 
+    public List<Requirement> mapRequirementToPogo(String originalFileName) {
+        System.out.println("originalFileName = " + originalFileName);
+        List<Requirement> requirementList = csvService.csvToBeanRequirementClass(originalFileName);
+        return requirementList;
+    }
+
+    public MetadataService[] mapReqPojoToMetadata(List<Requirement> requirementList) {
+        List<Metadata> metadataList = new ArrayList<>();
+
+        for(Requirement req : requirementList){
+            String option_values[] = req.getOptions_Values().split(",");
+            String option_labels[] = req.getOptions_Labels().split(",");
+
+        }
+
+        return null;
+    }
 }

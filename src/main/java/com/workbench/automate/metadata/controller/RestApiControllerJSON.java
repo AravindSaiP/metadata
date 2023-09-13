@@ -2,14 +2,13 @@ package com.workbench.automate.metadata.controller;
 
 import com.workbench.automate.metadata.data.Data;
 import com.workbench.automate.metadata.model.Metadata;
+import com.workbench.automate.metadata.result_model.GroupClassResponse;
 import com.workbench.automate.metadata.result_model.ObjectClassResponse;
 import com.workbench.automate.metadata.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 @RestController
-public class RestApiController {
+public class RestApiControllerJSON {
 
     @Autowired
     MetadataService metadataService;
@@ -34,9 +33,10 @@ public class RestApiController {
         data.setOption_start_index(start);
         ObjectClassResponse response = metadataService.createMetadata(metadata,objectId);
         if(response.getObjectClasses().length == metadata.length){
-            metadataService.createLables(response.getObjectClasses(),response.getOptions(),metadata);
+            GroupClassResponse groupResponse = metadataService.createGroups(response.getObjectClasses(), metadata);
+            metadataService.createLables(response.getObjectClasses(),response.getOptions(),groupResponse.getGroupIds(),metadata);
             metadataService.createOptions(response.getOptions());
-            metadataService.createGroups(response.getObjectClasses(), metadata);
+
         }
 
         EntityModel<ObjectClassResponse> entityModel = EntityModel.of(response);

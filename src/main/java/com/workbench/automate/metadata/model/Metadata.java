@@ -1,8 +1,11 @@
 package com.workbench.automate.metadata.model;
 
 
+import lombok.Builder;
+
 import java.util.Arrays;
 
+@Builder
 public class Metadata {
 
     private String type;
