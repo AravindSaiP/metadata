@@ -27,11 +27,13 @@ public class MetadataService {
     private Map<String,String> subTypeMap = new HashMap<>();
     private Map<String,String> typeMap = new HashMap<>();
 
+    private Map<String,String> variableType = new HashMap<>();
+
     public ObjectClassResponse createMetadata(Metadata[] metadata, String obectId){
 
         List<ObjectClass> objectClasses = new ArrayList<>();
         Map<String,String[]> options = new HashMap<>();
-        initilizeTypes();
+        this.initilizeTypes();
         for(int i=0;i< metadata.length;i++){
 
             String uuid = Integer.toString(generateID("objectId"));
@@ -48,11 +50,19 @@ public class MetadataService {
             String read_only = MetadataConstants.READ_ONLY;
             String def_option_id = "";
             String version = MetadataConstants.VERSION;
-            String variable_type = metadata[i].getVariable_type();
+            String variable_type = variableType.getOrDefault(metadata[i].getVariable_type(),"locale");//variableType.get(metadata[i].getVariable_type());
             String sub_type = subTypeMap.get(metadata[i].getType());
             String selection_entity = MetadataConstants.SELECTION_ENTITY;
             String content_variable = "";
             String identifier = "";
+
+            if(metadata[i].getVariable_type().equalsIgnoreCase("content")){
+                content_variable = code;
+            }
+
+            if(metadata[i].getType().equalsIgnoreCase("TGL")){
+                selection_entity = "1";
+            }
 
             if(!type.equals("textbox") && metadata[i].getOption_values().length > 0){
 
@@ -135,17 +145,20 @@ public class MetadataService {
         try{
             subTypeMap.put("Dropdown","DD");
             subTypeMap.put("Checkbox","CBX");
-            subTypeMap.put("Textbox","TA");
-            subTypeMap.put("Textarea","TA");
-            subTypeMap.put("Radiobutton","RB");
+            subTypeMap.put("Text box","TA");
+            subTypeMap.put("Text area","TA");
+            subTypeMap.put("Radio button","RB");
             subTypeMap.put("Heading","DISP_TXT");
 
             typeMap.put("Dropdown","Single-Select");
             typeMap.put("Checkbox","Single-Select");
-            typeMap.put("Textbox","textbox");
-            typeMap.put("Textarea","textbox");
-            typeMap.put("Radiobutton","Single-Select");
+            typeMap.put("Text box","textbox");
+            typeMap.put("Text area","textbox");
+            typeMap.put("Radio button","Single-Select");
             typeMap.put("Heading","textbox");
+
+            variableType.put("content","locale");
+            variableType.put("env","env");
 
             return true;
         }
@@ -241,7 +254,6 @@ public class MetadataService {
             StringBuilder entities = new StringBuilder("");
             String accordion_name = metadata[i].getAccordion_name();
             String parentAccordian_name = metadata[i].getParent_accordion_name();
-
             while (i < objectClasses.length && metadata[i].getAccordion_name().equalsIgnoreCase(accordion_name)){
                 entities = entities.append(objectClasses[i].getEntity_id()+",");
                 i++;
@@ -260,7 +272,7 @@ public class MetadataService {
             String isAccordion = "TRUE";
 
             if(!parentAccordian_name.equalsIgnoreCase("")){
-                parentAccordions.put(parentAccordian_name,groupId);
+                parentAccordions.put(accordion_name,groupId);
             }
 
             labelIdsMap.put(labelId,accordion_name);
@@ -271,7 +283,7 @@ public class MetadataService {
                     .code(code)
                     .entities(new String(entities))
                     .category(category)
-                    .parent_group(parentAccordions.get(groupId))
+                    .parent_group(parentAccordions.get(parentAccordian_name))
                     .version(version)
                     .repeatable(repeatable)
                     .group_by_key(groupByKeys)
@@ -295,15 +307,49 @@ public class MetadataService {
         return requirementList;
     }
 
-    public MetadataService[] mapReqPojoToMetadata(List<Requirement> requirementList) {
+
+//    {
+//        "type":"Dropdown",
+//            "variable":"var2",
+//            "variable_type":"content",
+//            "sub_type":"RB",
+//            "option_values":["0","1"],
+//        "option_labels":["disable","enable"],
+//        "title":"title2",
+//            "description":"description2",
+//            "defaultValue":"defaultValue2",
+//            "tooltip":"tooltip",
+//            "dependencies":[],
+//        "accordion_name":"",
+//
+    public Metadata[] mapReqPojoToMetadata(List<Requirement> requirementList) {
         List<Metadata> metadataList = new ArrayList<>();
 
         for(Requirement req : requirementList){
+
             String option_values[] = req.getOptions_Values().split(",");
             String option_labels[] = req.getOptions_Labels().split(",");
+            String dependencies[] = {};
+
+            Metadata metadata = Metadata.builder()
+                    .type(req.getType())
+                    .variable(req.getVariable_Name())
+                    .variable_type(req.getVariable_Type())
+                    .option_values(option_values)
+                    .option_labels(option_labels)
+                    .title(req.getTitle())
+                    .description(req.getDescription())
+                    .defaultValue(req.getDefault_Value())
+                    .tooltip(req.getTooltip())
+                    .dependencies(dependencies)
+                    .parent_accordion_name(req.getParent_Accordion())
+                    .accordion_name(req.getAccordion_Name())
+                    .build();
+
+            metadataList.add(metadata);
 
         }
 
-        return null;
+        return metadataList.toArray(new Metadata[0]);
     }
 }

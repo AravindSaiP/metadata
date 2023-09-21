@@ -14,7 +14,6 @@ public class Metadata {
     private String version;
     private String variable;
     private String variable_type;
-    private String sub_type;
     private String option_values[];
     private String option_labels[];
     private String title;
@@ -27,14 +26,13 @@ public class Metadata {
     private String parent_accordion_name;
 
 
-    public Metadata(String type, String deleted, String read_only, String version, String variable, String variable_type, String sub_type, String[] option_values, String[] option_labels, String title, String description, String defaultValue, String tooltip, String[] dependencies, String accordion_name, String parent_accordion_name) {
+    public Metadata(String type, String deleted, String read_only, String version, String variable, String variable_type,String[] option_values, String[] option_labels, String title, String description, String defaultValue, String tooltip, String[] dependencies, String accordion_name, String parent_accordion_name) {
         this.type = type;
         this.deleted = deleted;
         this.read_only = read_only;
         this.version = version;
         this.variable = variable;
         this.variable_type = variable_type;
-        this.sub_type = sub_type;
         this.option_values = option_values;
         this.option_labels = option_labels;
         this.title = title;
@@ -92,14 +90,6 @@ public class Metadata {
 
     public void setVariable_type(String variable_type) {
         this.variable_type = variable_type;
-    }
-
-    public String getSub_type() {
-        return sub_type;
-    }
-
-    public void setSub_type(String sub_type) {
-        this.sub_type = sub_type;
     }
 
     public String[] getOption_values() {
@@ -183,7 +173,6 @@ public class Metadata {
                 ", version='" + version + '\'' +
                 ", variable='" + variable + '\'' +
                 ", variable_type='" + variable_type + '\'' +
-                ", sub_type='" + sub_type + '\'' +
                 ", option_values=" + Arrays.toString(option_values) +
                 ", option_labels=" + Arrays.toString(option_labels) +
                 ", title='" + title + '\'' +
@@ -191,6 +180,8 @@ public class Metadata {
                 ", defaultValue='" + defaultValue + '\'' +
                 ", tooltip='" + tooltip + '\'' +
                 ", dependencies=" + Arrays.toString(dependencies) +
+                ", accordion_name='" + accordion_name + '\'' +
+                ", parent_accordion_name='" + parent_accordion_name + '\'' +
                 '}';
     }
 }

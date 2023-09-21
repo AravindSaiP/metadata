@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Builder
 public class Requirement {
     //Accordions	Title	PM Category	Type	Options	dev description	Description	Default Value	Tooltip	Comments	Category	Variable Name	Variable Type
-    private String Accordions;
+
     private String Title;
 
     private String Type;
@@ -20,12 +20,16 @@ public class Requirement {
     private String Variable_Name;
     private String Variable_Type;
 
+    private String Parent_Accordion;
+
+    private String Accordion_Name;
+
+
     public Requirement() {
     }
 
+    public Requirement(String title, String type, String options_Labels, String options_Values, String description, String default_Value, String tooltip, String dependencies, String variable_Name, String variable_Type, String parent_Accordion, String accordion_Name) {
 
-    public Requirement(String accordions, String title, String type, String options_Labels, String options_Values, String description, String default_Value, String tooltip, String dependencies, String variable_Name, String variable_Type) {
-        Accordions = accordions;
         Title = title;
         Type = type;
         Options_Labels = options_Labels;
@@ -36,15 +40,27 @@ public class Requirement {
         Dependencies = dependencies;
         Variable_Name = variable_Name;
         Variable_Type = variable_Type;
+        Parent_Accordion = parent_Accordion;
+        Accordion_Name = accordion_Name;
     }
 
-    public String getAccordions() {
-        return Accordions;
+    public String getParent_Accordion() {
+        return Parent_Accordion;
     }
 
-    public void setAccordions(String accordions) {
-        Accordions = accordions;
+    public void setParent_Accordion(String parent_Accordion) {
+        Parent_Accordion = parent_Accordion;
     }
+
+    public String getAccordion_Name() {
+        return Accordion_Name;
+    }
+
+    public void setAccordion_Name(String accordion_Name) {
+        Accordion_Name = accordion_Name;
+    }
+
+
 
     public String getTitle() {
         return Title;
@@ -129,7 +145,6 @@ public class Requirement {
     @Override
     public String toString() {
         return "Requirement{" +
-                "Accordions='" + Accordions + '\'' +
                 ", Title='" + Title + '\'' +
                 ", Type='" + Type + '\'' +
                 ", Options_Labels='" + Options_Labels + '\'' +
@@ -140,6 +155,8 @@ public class Requirement {
                 ", Dependencies='" + Dependencies + '\'' +
                 ", Variable_Name='" + Variable_Name + '\'' +
                 ", Variable_Type='" + Variable_Type + '\'' +
+                ", Parent_Accordion='" + Parent_Accordion + '\'' +
+                ", Accordion_Name='" + Accordion_Name + '\'' +
                 '}';
     }
 }

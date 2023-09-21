@@ -1,23 +1,41 @@
 "text_id","en","fr_FR","ko","es","jp","version","de","fr"
-"l9000","title","","","","","1","",""
-"d9000","description","","","","","1","",""
-"t9000","tooltip","","","","","1","",""
-"t9000","tooltip","","","","","1","",""
-"l9001","title2","","","","","1","",""
-"d9001","description2","","","","","1","",""
-"t9001","tooltip","","","","","1","",""
-"t9001","tooltip","","","","","1","",""
-"l9002","title","","","","","1","",""
-"d9002","description","","","","","1","",""
-"t9002","tooltip","","","","","1","",""
-"t9002","tooltip","","","","","1","",""
-"l9003","title2","","","","","1","",""
-"d9003","description2","","","","","1","",""
-"t9003","tooltip","","","","","1","",""
-"t9003","tooltip","","","","","1","",""
-"op9002","disable","","","","","1","",""
-"op9003","enable","","","","","1","",""
-"op9000","disable","","","","","1","",""
-"op9001","enable","","","","","1","",""
-"l10000","Acc1","","","","","1","",""
-"l10001","","","","","","1","",""
+"l5000","Search Knowledge","","","","","1","",""
+"d5000","Search knowledge lets users access articles, guides, and/or blogs relevant to a particular topic, or issue that the user is searching for, without having to use separate search engines. 
+
+This field shows how the Assistant responds to situations and employee's questions. ","","","","","1","",""
+"t5000","This section lets you control how the assistant responds to unsupported user commands, by redirecting them to relevant articles.
+
+For detailed help, see <<link>>., or email <support@kore.com>>","","","","","1","",""
+"l5001","Conversation flow","","","","","1","",""
+"d5001","Assistant's response applicable to 'Search Knowledge' flow","","","","","1","",""
+"t5001","","","","","","1","",""
+"l5002","Intent name","","","","","1","",""
+"d5002","Name of the intent to show articles","","","","","1","",""
+"t5002","Changing the Intent name affects how the name is displayed in the chat window.  
+","","","","","1","",""
+"t5002","Changing the Intent name affects how the name is displayed in the chat window.  
+","","","","","1","",""
+"l5003","Search article name prompt","","","","","1","",""
+"d5003","Assistant's prompt seeking for the article name that needs to be searched","","","","","1","",""
+"t5003","","","","","","1","",""
+"t5003","","","","","","1","",""
+"l5004","Articles found message","","","","","1","",""
+"d5004","Assistant's response with the list of articles found","","","","","1","",""
+"t5004","Available variables to construct the message
+
+Field1: top_article_title, Example Value: Excel troubleshooting
+Field2: top_article_snippet, Example Value: Excel files can exist on the computer for a long time. They are upgraded from version to version, and frequently travel from one user to another user. Frequently, a user inherits an Excel file but doesn't know what is included in the file. The following things can cause performance or crashing issues
+Field3: delay_n, Example Value: delay_3
+There would be a delay of 'n' seconds after this message on adding this variable","","","","","1","",""
+"t5004","Available variables to construct the message
+
+Field1: top_article_title, Example Value: Excel troubleshooting
+Field2: top_article_snippet, Example Value: Excel files can exist on the computer for a long time. They are upgraded from version to version, and frequently travel from one user to another user. Frequently, a user inherits an Excel file but doesn't know what is included in the file. The following things can cause performance or crashing issues
+Field3: delay_n, Example Value: delay_3
+There would be a delay of 'n' seconds after this message on adding this variable","","","","","1","",""
+"l5005","No articles found message","","","","","1","",""
+"d5005","Assistant's response when there are no articles to show","","","","","1","",""
+"t5005","","","","","","1","",""
+"t5005","","","","","","1","",""
+"l6001","Sub accordion 1","","","","","1","",""
+"l6000","Accordion 1","","","","","1","",""

@@ -1,3 +1,3 @@
 "group_id","label_id","code","entities","category","parent_group","version","repeatable","group_by_key","isAccordion"
-"gr10000","l10000","GR10000","e9000","newFile","","1","0","","TRUE"
-"gr10001","l10001","GR10001","e9001,e9002,e9003","newFile","","1","0","","TRUE"
+"gr6000","l6000","GR6000","e5000","knowledgeSearch","","1","0","","TRUE"
+"gr6001","l6001","GR6001","e5001,e5002,e5003,e5004,e5005","knowledgeSearch","gr6001","1","0","","TRUE"

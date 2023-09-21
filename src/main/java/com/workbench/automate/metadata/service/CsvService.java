@@ -24,6 +24,7 @@ import java.util.List;
 public class CsvService {
 
     private final String requirements_path_prefix = "C:\\Automating_Metadata\\metadata\\requirments\\";
+    private final String sheets_path = "C:\\Automating_Metadata\\metadata\\";
 
     public void beanToCsvObjectClass(List<ObjectClass> objectClassList, String sheetName){
         try {
@@ -164,7 +165,7 @@ public class CsvService {
          {
              ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
              strategy.setType(Requirement.class);
-             String[] memberFieldsToBindTo = {"Accordions", "Title", "Type" ,"Options_Labels", "Options_Values","Description","Default_Value","Tooltip","Dependencies","Variable_Name","Variable_Type"};
+             String[] memberFieldsToBindTo = {"Parent_Accordion","Accordion_Name", "Title", "Type" ,"Options_Labels", "Options_Values","Description","Default_Value","Tooltip","Dependencies","Variable_Name","Variable_Type"};
              strategy.setColumnMapping(memberFieldsToBindTo);
              CsvToBean<Requirement> requirement = new CsvToBeanBuilder(reader)
                      .withMappingStrategy(strategy)
@@ -199,5 +200,117 @@ public class CsvService {
              throw new RuntimeException(e);
          }
 
+    }
+
+    public List<GroupClass> csvToBeanGroupClass(String fileName){
+        try(Reader reader = Files.newBufferedReader(Paths.get(sheets_path+fileName));)
+        {
+            ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
+            strategy.setType(GroupClass.class);
+            String[] memberFieldsToBindTo = {"group_id","label_id","code","entities","category","parent_group","version","repeatable","group_by_key","isAccordion"};
+            strategy.setColumnMapping(memberFieldsToBindTo);
+            CsvToBean<GroupClass> groupClass = new CsvToBeanBuilder(reader)
+                    .withMappingStrategy(strategy)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            Iterator<GroupClass> groupClassIterator = groupClass.iterator();
+            List<GroupClass> groupClassList = new ArrayList<>();
+            while (groupClassIterator.hasNext()) {
+                GroupClass gp = groupClassIterator.next();
+                groupClassList.add(gp);
+            }
+
+            return groupClassList;
+
+        } catch (IOException e) {
+            System.out.println("e = " + e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<OptionClass> csvToBeanOptionClass(String fileName){
+        try(Reader reader = Files.newBufferedReader(Paths.get(sheets_path+fileName));)
+        {
+            ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
+            strategy.setType(OptionClass.class);
+            String[] memberFieldsToBindTo = {"id","entity_id","version","code"};
+            strategy.setColumnMapping(memberFieldsToBindTo);
+            CsvToBean<OptionClass> optionClass = new CsvToBeanBuilder(reader)
+                    .withMappingStrategy(strategy)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            Iterator<OptionClass> optionClassIterator = optionClass.iterator();
+            List<OptionClass> optionClassList = new ArrayList<>();
+            while (optionClassIterator.hasNext()) {
+                OptionClass op = optionClassIterator.next();
+                optionClassList.add(op);
+            }
+
+            return optionClassList;
+
+        } catch (IOException e) {
+            System.out.println("e = " + e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<LabelClass> csvToBeanLabelsClass(String fileName){
+        try(Reader reader = Files.newBufferedReader(Paths.get(sheets_path+fileName));)
+        {
+            ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
+            strategy.setType(LabelClass.class);
+            String[] memberFieldsToBindTo = {"text_id","en","fr_FR","ko","es","jp","version","de","fr"};
+            strategy.setColumnMapping(memberFieldsToBindTo);
+            CsvToBean<LabelClass> labelClass = new CsvToBeanBuilder(reader)
+                    .withMappingStrategy(strategy)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            Iterator<LabelClass> labelClassIterator = labelClass.iterator();
+            List<LabelClass> labelClassList = new ArrayList<>();
+            while (labelClassIterator.hasNext()) {
+                LabelClass lc = labelClassIterator.next();
+                labelClassList.add(lc);
+            }
+
+            return labelClassList;
+
+        } catch (IOException e) {
+            System.out.println("e = " + e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<ObjectClass> csvToBeanObjectClass(String fileName){
+        try(Reader reader = Files.newBufferedReader(Paths.get(sheets_path+fileName));)
+        {
+            ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
+            strategy.setType(ObjectClass.class);
+            String[] memberFieldsToBindTo = {"entity_id","label_id","type","hint_id","deleted","read_only","def_option_id","version","code","description","tooltip","variable_type","sub_type","selection_entity","content_variable","identifier"};
+            strategy.setColumnMapping(memberFieldsToBindTo);
+            CsvToBean<ObjectClass> objectClass = new CsvToBeanBuilder(reader)
+                    .withMappingStrategy(strategy)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            Iterator<ObjectClass> objectClassIterator = objectClass.iterator();
+            List<ObjectClass> objectClassList = new ArrayList<>();
+            while (objectClassIterator.hasNext()) {
+                ObjectClass oc = objectClassIterator.next();
+                objectClassList.add(oc);
+            }
+
+            return objectClassList;
+
+        } catch (IOException e) {
+            System.out.println("e = " + e);
+            throw new RuntimeException(e);
+        }
     }
 }
